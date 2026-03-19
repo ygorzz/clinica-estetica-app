@@ -1,0 +1,74 @@
+# Removido 'version' (obsoleto)
+volumes:
+  n8n_data:
+  evolution_data:
+  evolution_store:
+  postgres_data:
+  redis_data:
+
+services:
+  # --- SERVIÇO 1: O CÉREBRO (n8n) ---
+  n8n:
+    image: n8nio/n8n
+    ports:
+      - "5678:5678"
+    volumes:
+      - n8n_data:/home/node/.n8n
+      - ./:/home/node/local-files
+    environment:
+      - TZ=America/Sao_Paulo
+      - GENERIC_TIMEZONE=America/Sao_Paulo
+    restart: always
+
+  # --- SERVIÇO 2: BANCO DE DADOS (PostgreSQL) ---
+  postgres:
+    image: postgres:15-alpine
+    environment:
+      - POSTGRES_USER=evolution
+      - POSTGRES_PASSWORD=evolution_pass
+      - POSTGRES_DB=evolution_db
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    restart: always
+
+  # --- SERVIÇO 3: FILAS E CACHE (Redis) ---
+  redis:
+    image: redis:alpine
+    command: ["redis-server", "--requirepass", "redispass123"]
+    volumes:
+      - redis_data:/data
+    restart: always
+
+  # --- SERVIÇO 4: O TELEFONE (Evolution API) ---
+  evolution-api:
+    image: evoapicloud/evolution-api:latest # <-- [MUDANÇA 1] Usando a nova imagem que você encontrou
+    ports:
+      - "8080:8080"
+    volumes:
+      - evolution_data:/evolution/instances # <-- [MUDANÇA 2] O path do volume mudou
+      # (O volume 'evolution_store' não parece ser usado por esta imagem)
+    environment:
+      # --- Configuração de Autenticação e URL ---
+      - AUTHENTICATION_TYPE=apikey
+      - AUTHENTICATION_API_KEY=minhaapi123
+      - SERVER_URL=http://localhost:8080 # <-- [MUDANÇA 3] Usando a variável 'SERVER_URL'
+
+      # --- [MUDANÇA 4] O FIX DO QR CODE ---
+      # (Vamos usar a versão que você sugeriu no prompt anterior, que é válida)
+      - CONFIG_SESSION_PHONE_VERSION=2.3000.1023204200
+            
+      # --- Configuração do Banco (PostgreSQL) ---
+      # (Usando as variáveis da nova imagem)
+      - DATABASE_ENABLED=true
+      - DATABASE_PROVIDER=postgresql
+      - DATABASE_CONNECTION_URI=postgresql://evolution:evolution_pass@postgres:5432/evolution_db
+      
+      # --- Configuração do Redis ---
+      # (Usando as variáveis da nova imagem)
+      - CACHE_REDIS_ENABLED=true
+      - CACHE_REDIS_URI=redis://:redispass123@redis:6379/2
+      
+    restart: always
+    depends_on:
+      - postgres
+      - redis
