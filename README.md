@@ -45,4 +45,4 @@ Esta experiência permitiu entender profundamente:
 3.  **Limites e Potencial:** A aplicação serve como prova de que, embora a IA facilite a criação de protótipos funcionais rapidamente, o olhar humano é indispensável para a segurança e refinamento da lógica de agendamentos.
 
 ---
-Desenvolvido por **Ygor** — [LinkedIn](https://www.linkedin.com/in/ygor-santos-869152325/)
+Desenvolvido por **Ygor** — [LinkedIn](https://www.linkedin.com/in/ygor-santos-869152325/) | [GitHub](https://github.com/ygorzz)
