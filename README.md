@@ -44,5 +44,16 @@ Esta experiência permitiu entender profundamente:
 2.  **Desenvolvedor como Arquiteto:** A mudança do papel do dev, que passa a focar mais na lógica de negócio e na conexão entre serviços do que em sintaxes repetitivas.
 3.  **Limites e Potencial:** A aplicação serve como prova de que, embora a IA facilite a criação de protótipos funcionais rapidamente, o olhar humano é indispensável para a segurança e refinamento da lógica de agendamentos.
 
+## 🕹️ Como rodar o projeto
+
+### 1. Pré-requisitos
+* **Docker & Docker Compose** instalados e rodando.
+* Chave de API do **Google AI Studio** (para o Gemini).
+
+### 2. Configuração Inicial
+1.  Clone o repositório.
+2.  Configure o `.env` seguindo os exemplos (`.env.example`).
+3.  Suba os serviços via Docker: `docker-compose up -d`.
+   
 ---
 Desenvolvido por **Ygor** — [LinkedIn](https://www.linkedin.com/in/ygor-santos-869152325/) | [GitHub](https://github.com/ygorzz)
